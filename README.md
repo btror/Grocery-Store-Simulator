@@ -1,5 +1,5 @@
 # Grocery-Store-Simulator
-A GUI of a simple store that sells fruits and vegetables with a cart system.
+A GUI of a simple store that sells fruits and vegetables with a cart and checkout system.
 
 ### (Day 1)
 - created the basic design and layout
