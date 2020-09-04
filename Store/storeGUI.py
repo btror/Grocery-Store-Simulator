@@ -13,15 +13,23 @@ class Customer:
     def __init__(self, name, wallet):
         self.name = name
         self.wallet = wallet
+        self.cart = {
+            "apple": 0,
+            "carrot": 0,
+            "tomato": 0,
+            "pickle": 0,
+            "banana": 0,
+            "onion": 0
+        }
 
 
 store_inventory = {
-    "apple": 50,
-    "carrot": 40,
-    "tomato": 55,
-    "pickle": 20,
-    "banana": 42,
-    "onion": 23
+    "apple": .99,
+    "carrot": .59,
+    "tomato": 1.24,
+    "pickle": 2.88,
+    "banana": .79,
+    "onion": .65
 }
 
 grocery_store = Store("Stan's Fruit Stand", store_inventory)
@@ -31,6 +39,110 @@ root = Tk()
 root.title("Grocery Store Simulator")
 root.geometry('700x550')
 root.resizable(False, False)
+
+'''
+systems
+'''
+
+
+def add_to_cart(number):
+    value = 0
+    if number == 1:
+        value = combobox_apple.get()
+        shopper.cart["apple"] = value
+        print(shopper.cart)
+    if number == 2:
+        value = combobox_carrot.get()
+        shopper.cart["carrot"] = value
+        print(shopper.cart)
+    if number == 3:
+        value = combobox_tomato.get()
+        shopper.cart["tomato"] = value
+        print(shopper.cart)
+    if number == 4:
+        value = combobox_pickle.get()
+        shopper.cart["pickle"] = value
+        print(shopper.cart)
+    if number == 5:
+        value = combobox_banana.get()
+        shopper.cart["banana"] = value
+        print(shopper.cart)
+    if number == 6:
+        value = combobox_onion.get()
+        shopper.cart["onion"] = value
+        print(shopper.cart)
+
+
+def check_out():
+    added_to_cart = Frame(root, width=700, height=550)
+    added_to_cart.pack()
+
+    button_back = Button(added_to_cart, text="back", font=("default", 18), command=added_to_cart.destroy)
+    button_back.place(x=316, y=465)
+
+    top_cart_label = Label(added_to_cart, text="Your Items", font=("default", 14))
+    top_cart_label.place(x=20, y=20)
+    # ttk.Separator(added_to_cart).place(x=0, y=70, relwidth=1)
+
+    count = 0
+    y_value = 30
+    total_cost = 0
+    for amount in shopper.cart.values():
+        if amount != 0:
+            temp_name = ''
+            item_cost = 0
+            ttk.Separator(added_to_cart).place(x=0, y=(y_value + 40), relwidth=1)
+            y_value += 60
+            if count == 0:
+                temp_name = "(" + str(amount) + ")    apples"
+                item_cost = float(amount) * float(grocery_store.inventory.get('apple'))
+                item_cost = round(item_cost, 2)
+                print(item_cost)
+
+            if count == 1:
+                temp_name = "(" + str(amount) + ")    carrots"
+                item_cost = float(amount) * float(grocery_store.inventory.get('carrot'))
+                item_cost = round(item_cost, 2)
+                print(item_cost)
+
+            if count == 2:
+                temp_name = "(" + str(amount) + ")    tomatoes"
+                item_cost = float(amount) * float(grocery_store.inventory.get('tomato'))
+                item_cost = round(item_cost, 2)
+                print(item_cost)
+
+            if count == 3:
+                temp_name = "(" + str(amount) + ")    pickles"
+                item_cost = float(amount) * float(grocery_store.inventory.get('pickle'))
+                item_cost = round(item_cost, 2)
+                print(item_cost)
+
+            if count == 4:
+                temp_name = "(" + str(amount) + ")    bananas"
+                item_cost = float(amount) * float(grocery_store.inventory.get('banana'))
+                item_cost = round(item_cost, 2)
+                print(item_cost)
+
+            if count == 5:
+                temp_name = "(" + str(amount) + ")    onions"
+                item_cost = float(amount) * float(grocery_store.inventory.get('onion'))
+                item_cost = round(item_cost, 2)
+                print(item_cost)
+
+            total_cost += item_cost
+            total_cost = round(total_cost, 2)
+
+            ttk.Separator(added_to_cart).place(x=0, y=430, relwidth=1)
+            Label(added_to_cart, text="$" + str(item_cost)).place(x=650, y=y_value)
+            Label(added_to_cart, text=temp_name).place(x=28, y=y_value)
+            Label(added_to_cart, text="  total").place(x=50, y=445)
+            Label(added_to_cart, text="$" + str(total_cost)).place(x=650, y=445)
+        count += 1
+
+
+'''
+labels and buttons
+'''
 
 label_apple = Label(root, text="Fresh Apples", bg="light blue")
 label_carrot = Label(root, text="Sliced Carrots", bg="light blue")
@@ -63,12 +175,12 @@ img_onion = Image.open("pics/onion.jpg")
 onion = ImageTk.PhotoImage(img_onion.resize((100, 100)))
 panel_onion = Label(root, image=onion, height=100, width=100)
 
-button_apple = Button(root, text="add to cart")
-button_carrot = Button(root, text="add to cart")
-button_tomato = Button(root, text="add to cart")
-button_pickle = Button(root, text="add to cart")
-button_banana = Button(root, text="add to cart")
-button_onion = Button(root, text="add to cart")
+button_apple = Button(root, text="add to cart", command=lambda: add_to_cart(1))
+button_carrot = Button(root, text="add to cart", command=lambda: add_to_cart(2))
+button_tomato = Button(root, text="add to cart", command=lambda: add_to_cart(3))
+button_pickle = Button(root, text="add to cart", command=lambda: add_to_cart(4))
+button_banana = Button(root, text="add to cart", command=lambda: add_to_cart(5))
+button_onion = Button(root, text="add to cart", command=lambda: add_to_cart(6))
 
 label_apple_price = Label(root, text="$0.99")
 label_carrot_price = Label(root, text="$0.59")
@@ -142,15 +254,6 @@ added_to_cart = Frame(root, width=700, height=550, bg='red')
 added_to_cart.pack()
 added_to_cart.destroy()
 '''
-
-
-def check_out():
-    added_to_cart = Frame(root, width=700, height=550)
-    added_to_cart.pack()
-
-    button_back = Button(added_to_cart, text="back", font=("default", 18), command=added_to_cart.destroy)
-    button_back.place(x=316, y=465)
-
 
 button_check_out = Button(root, text="check out", font=("default", 18), command=check_out)
 button_check_out.place(x=288, y=465)
